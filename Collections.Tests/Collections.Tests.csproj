@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Collections\Collections.csproj" />
+    <ProjectReference Include="..\Collections.csproj" />
   </ItemGroup>
 
 </Project>

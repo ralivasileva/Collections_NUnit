@@ -47,11 +47,11 @@ namespace Collections.Tests
             int capacity = 0;
 
             Collection<int> nums = new Collection<int>(values);
-            
+
             Collection_Count = nums.Count;
             capacity = nums.Capacity;
 
-            for     (int i = 0; i < 1000; i++)
+            for (int i = 0; i < 1000; i++)
             {
                 nums.Add(1);
                 Collection_Count++;
@@ -59,8 +59,8 @@ namespace Collections.Tests
                 {
                     capacity = 2 * capacity;
                 }
-            }           
-            
+            }
+
             Assert.AreEqual(nums.Count, Collection_Count);
             Assert.AreEqual(nums.Capacity, capacity);
 
@@ -74,13 +74,13 @@ namespace Collections.Tests
             Collection<int> nums = new Collection<int>(values);
             int Collection_Count = nums.Count;
             int firstValue = nums[0];
-            nums.InsertAt(0,22);
+            nums.InsertAt(0, 22);
             int insertedValue = nums[0];
             Assert.AreEqual(firstValue, 10);
             Assert.AreEqual(insertedValue, 22);
 
         }
-        
+
         [Test]
         [TestCase(new int[] { 10, 20, 30, 40, 50 }, TestName = "InsertWithGrowAtStart - 5 elements + 3 added")]
         [TestCase(new int[] { 10, 20, 30, 40, 50, 60, 70 }, TestName = "InsertWithGrowAtStart - 7 elements + 3 added")]
@@ -89,15 +89,15 @@ namespace Collections.Tests
             Collection<int> nums = new Collection<int>(values);
             int count = nums.Count;
 
-            Random rnd = new Random();  
+            Random rnd = new Random();
             int max = nums[0];
             int random_number = rnd.Next(0, max);
             nums.InsertAt(0, random_number);
             Assert.That(nums[0] < nums[1]);
-            Assert.AreEqual(nums.Count, count+1);
+            Assert.AreEqual(nums.Count, count + 1);
 
         }
-        
+
 
         [Test]
         [TestCase(new int[] { 10, 20, 30, 40, 50 }, TestName = "InsertWithGrowAtEnd - 5 elements + 3 added")]
@@ -106,52 +106,59 @@ namespace Collections.Tests
         {
             Collection<int> nums = new Collection<int>(values);
             int count = nums.Count;
-            Random rnd = new Random();  
-            int min = nums[count-1];
-            int random_number = rnd.Next(min, min+1000000);
+            Random rnd = new Random();
+            int min = nums[count - 1];
+            int random_number = rnd.Next(min, min + 1000000);
             nums.Add(random_number);
-            Assert.That(nums[count] > nums[count - 1] );
+            Assert.That(nums[count] > nums[count - 1]);
             Assert.AreEqual(nums.Count, count + 1);
-        } 
-        
+        }
+
         [Test]
-        [TestCase(new int[] { 10, 20, 30, 40, 50 }, TestName = "InsertWithGrowAtMiddle - 5 elements + 3 added")]
-        [TestCase(new int[] { 10, 20, 30, 40, 50, 60, 70 }, TestName = "InsertWithGrowAtMiddle - 7 elements + 3 added")]
+        [TestCase(new int[] { 10, 20, 30, 40, 50, 60 }, TestName = "InsertWithGrowAtMiddle - 6 elements")]
+        [TestCase(new int[] { 10, 20, 30, 40, 50, 60, 70 }, TestName = "InsertWithGrowAtMiddle - 7 elements")]
         public void InsertWithGrowAtMiddle(int[] values)
         {
             Collection<int> nums = new Collection<int>(values);
             int count = nums.Count;
             int middleIndex = 0;
-
+            int min;
+            int max;
 
             Random rnd = new Random();
-
-            if (count % 2 == 0)
-            {
-                middleIndex = (count) / 2;
-            }
-
-            else if (count % 2 == 1)
+            int random_number = 0;
+            if (count % 2 == 1)
             {
                 middleIndex = (count + 1) / 2;
             }
-            int min = nums[middleIndex-1];
-            int max = nums[middleIndex];
-            int random_number = rnd.Next(min, max);
+
+            if (count % 2 == 0)
+            {
+                int lastIndexValue = nums[count - 1];
+                random_number = rnd.Next(lastIndexValue, 1000000);
+                nums.Add(random_number);
+                count++;
+                middleIndex = (count + 1) / 2;
+            }
+
+            min = nums[middleIndex - 1];
+            max = nums[middleIndex];
+            random_number = rnd.Next(min, max);
             nums.InsertAt(middleIndex, random_number);
             Assert.That(nums[middleIndex] < nums[middleIndex + 1]);
-            Assert.That(nums[middleIndex] > nums[middleIndex-1]);
+            Assert.That(nums[middleIndex] >= nums[middleIndex - 1]);
             Assert.AreEqual(nums.Count, count + 1);
 
-        } 
+
+        }
 
         [Test]
         [TestCase(new int[] { 10, 20, 30, 40, 50 }, TestName = "Delete_At_End - 5 elements - 1 removed")]
-         public void Test_Collections_Delete_At_End(int[] values)
+        public void Test_Collections_Delete_At_End(int[] values)
         {
             Collection<int> nums = new Collection<int>(values);
             int Collection_Count = nums.Count;
-            nums.RemoveAt(Collection_Count-1);
+            nums.RemoveAt(Collection_Count - 1);
             Assert.AreEqual(nums.Count, Collection_Count - 1);
 
             String array = nums.ToString();
@@ -185,19 +192,19 @@ namespace Collections.Tests
 
         [Test]
         [TestCase(new int[] { 10, 20, 30, 40, 50 }, TestName = "Test_Collections_Delete_At_Start - 5 elements - 1 removed")]
-        [TestCase(new int[] { 10, 20, 30, 40, 60, 70 , 50 }, TestName = "Test_Collections_Delete_At_Start - 7 elements - 1 removed")]
+        [TestCase(new int[] { 10, 20, 30, 40, 60, 70, 50 }, TestName = "Test_Collections_Delete_At_Start - 7 elements - 1 removed")]
         public void Test_Collections_Exchange_First_Last(int[] values)
         {
             Collection<int> nums = new Collection<int>(values);
             int Collection_Count = nums.Count;
             int firstElement = nums[0];
             int lastElement = nums[Collection_Count - 1];
-            nums.Exchange(0 , Collection_Count - 1 );
-            Assert.AreEqual(nums[Collection_Count-1], firstElement);
+            nums.Exchange(0, Collection_Count - 1);
+            Assert.AreEqual(nums[Collection_Count - 1], firstElement);
             Assert.AreEqual(nums[0], lastElement);
 
         }
-   
+
 
     }
 }

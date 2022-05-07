@@ -6,4 +6,10 @@
     <AssemblyName>Collections</AssemblyName>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Collections.Tests\**" />
+    <EmbeddedResource Remove="Collections.Tests\**" />
+    <None Remove="Collections.Tests\**" />
+  </ItemGroup>
+
 </Project>
